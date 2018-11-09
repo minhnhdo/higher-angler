@@ -35,21 +35,14 @@
         as (repeatedly (count body) #(gensym "a-"))
         g (gensym "g-")
         bound (gensym "bound-")
-        initial-value (gensym "initial-value-")
-        loop-helper (gensym "loop-helper-")
-        loop-helper-expr '(fn [loop-helper i c v g]
-                            (if (= i c)
-                              v
-                              (let [new-v (g i v)]
-                                (loop-helper loop-helper (+ i 1) c new-v g))))]
+        initial-value (gensym "initial-value-")]
     (desugar-let
       (list 'let (into (apply vector
                               bound c
                               initial-value e
                               (interleave as body))
-                       [g (list 'fn '[i w] (apply list f 'i 'w as))
-                        loop-helper loop-helper-expr])
-            (list loop-helper loop-helper 0 bound initial-value g)))))
+                       [g (list 'fn '[i w] (apply list f 'i 'w as))])
+            (list 'loop-helper 0 bound initial-value g)))))
 
 (defn- desugar-foreach
   [e]
