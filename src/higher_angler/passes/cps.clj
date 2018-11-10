@@ -81,7 +81,10 @@
     (and (symbol? e)
          (not (defined-names e))
          (ifn? (binding [*ns* (the-ns 'higher-angler.primitives)] (eval e))))
-    (list k s (list 'fn [k s '& 'args] (list k s (list 'apply e 'args))))
+    (let [new-k (gensym "k-")
+          new-s (gensym "s-")]
+      (list k s (list 'fn [new-k new-s '& 'args]
+                      (list new-k new-s (list 'apply e 'args)))))
 
     :else (list k s e)))
 
