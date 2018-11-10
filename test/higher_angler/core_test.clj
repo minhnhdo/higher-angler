@@ -3,6 +3,7 @@
             [clojure.test :refer :all]
             [higher-angler.errors :refer [check-error checked->]]
             [higher-angler.passes.addressing :refer [addressing]]
+            [higher-angler.passes.cps :refer [cps-of-program]]
             [higher-angler.passes.desugar :refer [desugar]]
             [higher-angler.passes.parse :refer [parse]]))
 
@@ -15,7 +16,8 @@
               output (higher-angler.errors/checked->
                        parse-result
                        check-error desugar
-                       check-error addressing)]
+                       check-error addressing
+                       check-error cps-of-program)]
           (is (nil? (:higher-angler.errors/error output)))
           (let [desugared-twice (desugar output)]
             (is (nil? (:higher-angler.errors/error (desugar output))))
