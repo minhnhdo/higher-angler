@@ -49,12 +49,12 @@
     (repeatedly #(do (reset! state 0.0)
                      (binding [*ns* (the-ns 'higher-angler.primitives)]
                        (let [result (interp state sub e)]
-                         [@state result]))))))
+                         [result @state]))))))
 
 (def ^:private interp-algorithm
   {:likelihood-weighting likelihood-weighting})
 
-(defn infer
+(defn query
   [^Keyword algorithm ^IPersistentVector program & options]
   (let [alg (interp-algorithm algorithm)
         {:keys [burn-in] :or {burn-in 10000}} options
