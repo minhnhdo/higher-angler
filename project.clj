@@ -9,4 +9,5 @@
                  [anglican "1.0.0"]]
   :main ^:skip-aot higher-angler.core
   :target-path "target/%s"
+  :jvm-opts ["-Xss8m"]
   :profiles {:uberjar {:aot :all}})
